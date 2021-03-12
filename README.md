@@ -7,7 +7,10 @@ There are 2 important programs here--gardenOS.pl(actual) and valcom.pl(for testi
 The structure and the commands supported can be found in:
 
   -build_log.txt
+  
   -program_notes.txt
+  
   -everything in the "details" sub-folder
+  
 
 There isn't any official documentation of the commands yet, sorry about that
