@@ -1,0 +1,40 @@
+Structure
+
+1. Main command line
+	2. Garden
+	3. Sea/Oyster bed
+
+Commands
+1. Make them into tools, then call from inside out :)
+	Only for specific ones
+2. need to validate too
+	
+Storing commands
+1. hash?
+
+Searching commands
+1. regex
+2. index, substr
+
+Interface
+1. Main loop
+2. make it as an individual program, not run through cmd anymore
+3. Show cwd
+4. indicate the promt
+5. No unicode, for windows only
+6. For inputs, pass to a validation system, and then get the return value
+	do stuff based on the return value
+	Split based on space, there will always be some commands that are independent
+		Can limit the searching process, if more than a limit, directly seen as invalid, with some exceptions
+
+Main loop
+	-implement signal catching?
+	! activate commands
+	infinity loop
+		1. display prompt
+		2. wait for input
+		3. validate input
+			! validate input based on activated commands
+		4. do something
+			! implement the corresponding actions/commands
+		5. repeat

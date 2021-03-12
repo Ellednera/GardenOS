@@ -1,0 +1,71 @@
+Perl-for fun
+Idea: a command line as os
+Includes: flower and plants terminology as commands
+Main: controls directories and files
+Name: Garden-OS
+
+All command will be execute through existing cmd commands if needed, ie windows only :)
+If not, then we'll leave it to Perl
+Able to execute very os-specific files with surprises
+maybe make some predefined programs, like the ones in Unix, Linux etc, cat, tac, ls, rm, mv etc
+Graphics: implement in the future
+Most commands will have responses
+
+First stage: make sure to create it's own dir. for all its files etc, several files shuold not be editable
+2nd: make sure it has several commands to do certain things, could be anything
+
+Terminology (redefined): 
+Original		Redefined(can be in plural form)	examples					notes
+help			Hashem								Hashem -help			case sensitive, very, a global command
+help(hints)		prayfor								prayfor hints			hints about the game, random
+help(hints)		prayfor								prayfor parnasah		affects the garden and the scoring system and the pearl too
+-				offer								offer Hashem pearl 		unlock all locked/not-ye obtained features, the pearl is everyting
+-				offer								offer Hashem [flower_name] flower_name is the bloom, bloom with specific extension is special
+make the pearl hard to obtain
+
+executables		[flower name(s)]
+file			leaf
+directory		branch
+home			trunk
+root			root
+desktop(cd)		treehouse
+create			plant								plant seed(s) arg(s)  
+create			grow								grow branch | leaf
+create			bloom								bloom [flower name(s)]		surprises on the screen after opening it, can be given to Hashem to gain new blooms, or just buy from the store :)
+dir				explore
+dir				explore branch													show only the directories
+dir				explore leaf													show only files in the current working directory
+"super" dir		explode															shows all the dir & files starting from the cwd
+change dir		visit/move						
+delete			break|strip/nip						break [leaf [leaf_name]...] this type can reduce programming work, I'm not sure about that....
+path/%cd%		address
+cd				visit/move
+cd..			leave
+
+The garden
+-				name								name garden [new_garden_name] needs to be modified in the future
+-				visit								visit garden				garden is a built-in game
+-				find								find garden
+-				destroy								destroy garden				restart the game
+-				inspect								inspect garden				must be inside the garden to inspect
+-				water								water garden				water everything in one go
+-				plant								plant flower|tree|vege
+..				leave								leave garden				this should be a global command, with any arg, go back once
+"dir"			search								search [pearl|flower|tree|vege]	the pearl will unlock all the locked/not-yet obtained features of the os
+Maybe this garden stuff shuold have a scoring system that will affect the other commands
+The flowers in the garden should affect the "bloom flower" command
+The pearl, hmm... maybe we need to add oysters :)
+
+(these features only affect the program itself, not the computer)
+start			morning
+hibernate		freeze
+shutdown		night
+reformat(I)		wither								wither [os_name]		reformat step by step
+reformat(II)	replant								replant [os_name]		let program do it's work
+reformat		withdraw							neshama [os_name]_widthdraw		revert to the very core of the program, the skeleton, empty os 
+
+
+
+
+
+

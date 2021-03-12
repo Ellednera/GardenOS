@@ -1,0 +1,90 @@
+Garden OS Build Log
+
+4 FEB 2021
+	1. Created the "engine", the os is mamash running correctly, baruch Hashem!
+	2. Implemented several simple commands
+	
+5 FEB 2021
+	1. Added more commands (grow branch, break branch)
+	2. Implemented the corresponding codes
+	3. A command validator script was created for testing purposes.
+		All the codes are written there first (resembling the actual script means better)
+		This file was named valcom.pl [ maybe name it ValCom? :) ]
+		Checking of logic is done in valcome then in the actual script
+	4. Remembered that the File::Path module can be used to remove trees (use it!)
+		add options/flags to "activate this one" so that we don't need to delete 
+		too much codes :)
+
+7 FEB 2021
+	1. Implemented the flag command, "break branch -force", currently only allow standard
+		commands
+	2. Tried the File::Path module, successful, but there's some strange problems with its
+		error reporting part, used $! instead when removing folder containing sub-directories.
+	3. Changed the "home" command to "trunk", that's more like it :)
+	4. Refactored the commands that need the eval block to function.
+	
+8 FEB 2021
+	1. Implemented the command/syntax parser.
+	2. Flagged commands and standard commands are in a separate part of the program
+	3. The $do_sth variable will no longer be used, $flagged_command will be replaced instead.
+		When it is 0, it means it's just a normal/standard command. If 1, then it is a flagged command
+	4. The &flag_parser subroutine was initially put in the action part, which was wrong! 
+		Moved it to the validation part (Part 1)
+	5. The flagged command (break branch -force) was remove from the @commands array. It will rely on 
+		the &flag_parser subroutine to determine its validity in Part 1
+		
+10 FEB 2021
+	1. Implemented the grow_leaf subroutine. This is similar to creating a new file.
+	2. "grow leaf" command registered and activated. Tested, passed.
+		
+11 FEB 2021
+	1. Implemented the nip leaf command to delete single file. (See program notes for more details)
+	2. "nip leaf" command registered and activated. Tested, passed.
+	3. Extended the "main" loop so that pressing enter with no command at all will cause the program to 
+		behave the same as actual DOS or linux terminal, which does nothing	and doesn't give out the 
+		"Can't understand ''" message.
+	4. Fixed the "explore leaf" bug. It will no longer show items based on extension because a folder can have
+		a dot too. The file testing operator -f will be used instead.
+
+13 FEB 2021
+	1. Implemented the "visit" command to change directory. 
+		Command registered and activated. Tested, passed
+	2. Implemented the "leave" command to step-back 1 directory.
+		Command registered and activated. Tested, passed.
+	3. Implemented the "grow leaves" command to create multiple files in one go. It is optimized.
+		Command registered and activated. Tested, passed.
+	4. The "visit" command is not tested to change to another disk yet. It should work.
+		
+14 FEB 2021
+	1. Experimental "nip leaf -all" success. (See valcom.pl)
+		Command implemented, registers, activated and tested. Success.
+		
+15 FEB 2021
+	1. Corrected some of the output text.
+	2. Added a branch label for the "explore" command to differentiate between folders and files easily.
+		
+25 FEB 2021
+	1. Started the "nip leaf -some" and "nip leaf -most" features in valcom.
+	2. "nip leaf -some" feature is complete in valcom. Needs testing in actual program.
+		Testing passed. Implemented in the actual program.
+	3. "nip leaf -most" was implemented and tested directly in actual program. Success.
+	4. Factored the unlink file part into a function that unlinks a single file. This is used with the for loop
+		and it uses $_ variable from the for loop.
+		*Name of subroutine: &_nip_a_leaf_with_warnings($leafname);
+		*Notes: Since this is usually used in a for loop with the default control variable $_, most of the places 
+				calling this subroutine is called as &_nip_a_leaf_with_warnings($_)
+	5. Added a banner. Nice~
+	6. Corrected some of the output text.
+
+26 FEB 2021
+	1. Corrected the multiple filenames input regex spliting problem. \s? changed to \s+
+	2. Added a new command (treehouse) to return to the desktop. The "trunk" command might not be useful after 
+		implementing this command.
+	3. Edited the program_notes.txt
+				
+Besiyata d'shmaya
+
+
+
+
+
