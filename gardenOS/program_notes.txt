@@ -1,0 +1,195 @@
+Garden OS Notes (Program)
+
+* Using Perl as the language (instead of text file) will be easier to read
+* Do not run this file, it was not meant for execution!
+
+There is this program called valcom.pl (Valcom, ValCom or whatever). It is used to test very
+ basic implementation for the game. It could be a bit messy. There's no dependancies for the
+ subroutines, so you can just circumvent anything to get any part you want to run.
+
+When viewing ro coding or whatever you might do with the actual script (program), it's adviced
+ to open the function list if available.
+ 
+Every action (after entering a command) will cause a correspongding subroutine to be called, 
+ provided that the command is valid of course.
+ The invoked subroutine will handle everything. The codes inside these subroutines
+ could be refactored, but we might end up with very complicated or hard to understand
+ codes. Only the "obvious pattern" codes were refactored
+
+Almost every feature (aka. action or subroutine) has different output. So don't even think 
+ of refactoring the codes :)
+ 
+Registering a new command has a few steps:
+ 1. Add the command to the @commands variable if it is a standard command. If the command 
+	is a flagged command then skip this step and register the command in the &flag_parser() subroutine.
+ 2. Go to PART 2-2 and and choose which part the command belongs to(flagged or not flagged?). 
+	Add the if statement for the command. Most of the commands will need the eval block to catch 
+	error which is done through the &eval_commands($command) subroutine.
+ 3. If the eval block is needed, enter the &eval_commands($command) subroutine and register the command.
+ 4. Make sure to add in the whole block of the corresponding codes as a subroutine from the valcom :)
+ 5. Done!
+ 
+For eval in the if block (after entering the command), the pattern is:
+	{
+	local $@;
+	eval {	&grow_branch()	};
+	print $@ if $@;
+	}
+If the eval is not put inside a block, the $@ error message will always be there
+ and every loop will cause the message to appear due to the "print $@ if $@" statement.
+ Shuold consider the Try::Tiny module for this job :)
+ Currently, this block of code is not refactored (will be in the future).
+ The eval part should be in the subroutine it is under, but that will make the codes in the 
+ subroutine very messy.
+ Since this part of the code are repeated quite some time, therefore they were refactored from
+ this (multiple of them):
+	if ($command eq "break branch") {
+		{
+		local $@;
+		eval {	&break_branch()	};
+		print $@ if $@;
+		}
+	}
+ to this:
+	sub eval_commands {
+		my $command = shift or warn "Programming error! Parameter missing (validated_command)";
+		{
+			local $@;
+			
+			# these if statements will only execute once
+			if ($command eq "break branch") {
+				eval {	&break_branch()	};
+			} elsif ($command eq "break branch -force") {
+				eval {	&break_branch_by_force()	};
+			} elsif ($command eq "grow branch") {
+				eval {	&grow_branch()	};
+			}
+			
+			print $@ if $@;
+		}
+	}
+ All we need to do is to add another elsif into the code, up till this point, the command is 
+ already validated, so we don't need to worry about the input
+ This resembles a one-to-one pattern, one input will only trigger one action(subroutine), that's why the
+ if-elsif-else statements are between the local error message variable ($@) and the printing to the screen
+ This function invocation MUST NOT fail, because it is a programming site problem. The correct way to
+ invoke this function is by calling (literally):
+	&eval_commands($command);
+ where $command is defined every time the user enters some input. The source code already has this
+ variable declared beforehand.However, this subroutine must be called inside of the "action" if-else
+ statement
+ 
+The flags (anything that has a - on the left of a word) will only support one type of action, 
+ e.g. "breack branch -force". No arguements are supported currently. This means all the 
+ commands are standard commands, so all of them will go into into the @commands array. 
+ This WAS cool, because we could leave out the new command for this
+ array, and see if the loop works or not. The validation if-elsif part has already restricted
+ the fun, remove the one {} @commands part to see the fun, but not "secure"
+ 
+The structure for every y/n actions is as below:
+ For strange response ie not y or n, then the codes will be like:
+   else {
+		say "Cancelling the breaking, stripping and burning process . . ."; # change as needed
+		say " Reason: Strange response detected"; # don't change
+	}
+ The " Reason" part has a space before it. This only applies if the error is printed on a new line.
+	
+The remove_tree / rmtree function from File::Path doesn't collect errors for some reason
+ The key-pair value for the error part is not working as expected. However, this is solved
+ by checking the $! variable, because removing files will trigger the system.
+ 
+Implemented the command/syntax parser. All it does is just split the input based on 
+ whitespaces, and it will go throught a checking process part by part using a nested if-elsif-else
+ statement. This also means that we need to restrict the command syntax to a specific number, 
+ if not we can't know when to stop the process. This parser can't replace the commands register yet, it
+ might be able to aid it, but definitely not replace it. The problem is that the parser consists of nested 
+ if-elsif-else statements, and it work by assuming that all commands have a standard number of parts. Maybe 
+ this parser will be used for any command with flags.
+ Ok, done. The parser is used to parse flagged commands only.
+ The parser returns 1 if the command is correct and 0 if any part of the command is wrong.
+
+The flag parser is invoked literally as:
+ &flag_parser($command)
+ and checked for its return value. 0 means invalid command, 1 means valid command
+ 
+On the eval_commands subroutine:
+ If the command will need a eval block to catch errors, then it will need to be included in that part.
+ Since the break statement has both flagged and non-flagged commands, and both needs an eval block, therefore
+ the &eval_commands subroutine are included in both parts of the program (flagged and non-flagged parts). If anything 
+ command that run successfully before and isn't recognized anymore after the implementation ofthe parse, it could be 
+ due to the missing &eval_commands subroutine missing which shuoldn't be by now.
+Any subroutine with a warn to display error message cannot be put under the eval block, the eval_commands part will catch 
+ any die error. It's for a single action only. This means that any action that does multiple things in one go won't and 
+ cannot appear in that block.
+
+Some interesting stuff on the flag parser. Since it is used in the validation process, any flagged-like command
+ that doesn't pass the validation process will cause the program to complain that the command is not recognised :)
+ That was unexpected, but it's exactly what we wanted or needed. Actually, this is due to commenting the 'dianogtics' 
+ of the flagged commands, that's why we don't "feel" it running as expected. This actually means that our program 
+ has a very strong structure, baruch Hashem!
+
+The grow leaf command should not give any error even it is under the eval block. The error shuold most
+ likely be programming error or just system permission issues. This should be a rare scenario. The grow leaf command
+ will trigger an input for the file name in order not to break the structure of the program because this command is not 
+ flagged so it must be put under the @commands array.
+The command will create an empty file, we need the file to be in utf8 encoding by default, so we need to 
+ input some stuff, here it's an empty string using say (v5.10), it will inset some utf8 encoding stuff in and
+ the system will automatically render it as utf8 file instead of ASCII format.
+Any leaf grown cannot be deleted using the break branch command, because that command utilises the "rmdir" command,
+ which only removes directoried, if used to delete files, the $! will be "Invalid argument".
+ 
+The "nip leaf" command will use the "unlink" function in perl. The unlink command accepts one filename or
+ a list of filenames, but we still need to create different commands for deleting multiple files because we are
+ taking in the list as a string and splitting it. There's a chance that the filename might contain spaces.
+ This unlink function will also unlink directories only if the user is a superuser.
+This command needs the eval block too.
+Theoritically speaking, this command shuold be able to nip off a list of filenames. But since the leaf name is a scalar, 
+ it won't work. Another subroutine will be needed for this action.
+
+There is still no way of ignoring the $SIG{INT} because it will cause "Use of uninitialized value" error
+
+The "main" loop's first condition checking is the empty enter key. Even though the empty enter key is assummed 
+ not to be pressed often, it's checking is the first because the 2 other command validation is quite expensive.
+ An empty string is considered false, not undefined.
+ 
+The explore leaf and explore branch have similar codes, BUT it shuoldn't be refactored as it will cause extra 
+codes to be generated during compile time due to the checking of the file testing operator and printing the items.
+ 
+The visit command initially forces all input into lowercase, but it doesn't cause problems to the system.
+ The lowercase part was removed, so it's up to the user to decide how they want the text to appear. This will
+ also affect the output of the "address" command. It is based on the input of the user. Anything that has something 
+ to do with the path will be affected.
+ (See leave_command.png in the details folder for the screenshot for this part)
+ 
+The program started up a bit slow after the importing of the "File::Basename" module. We will leave it as it is for now.
+
+The "leave" command will not generate error if we are currently at the drive directory ie "C:/". It will just say "You leaf 'C:/'"
+ 
+The "break branch" command will delete the "." directory which is the same as deleting the directory itself. But deleting ".." 
+will result in an error (Permission denied). See "break_branch.png" in the details directory for the screenshot.
+ 
+The "grow leaves" command allow suse to create multiple file in one go. The input is a string with a comma + optional space
+ as the seperator. This command is not to be put under the eval_commands($command) part as it already has it's own error checking
+ because each file status needs to be printed out as it is created. See valcom for more details(comments on the codes)
+
+The "visit" command outputs a different error message when changing drive("D:/"). The system itself will say "cannot find the drive 
+ specified". However Perl will say no such directory. This needs to be tested with an actual external drive.
+
+"nip leaf -some" and "nip leaf -most" commands were successfully implemented. Take note that the "-most" flag feature was tested 
+ directly in the actual program. So don't expect it to appear in Valcom. These 2 commands don't need the eval block.
+ 
+Any subroutines that utilizes these following sub-subroutines (prefixed with an underscore _ ) don't need the eval block:
+ 1. _nip_a_leaf_with_warning (used with a for loop of filenames)
+	 This subroutine takes in 1 parameter which is the filename
+ 
+The list of text splitting uses the regex /,\s+/
+ 
+The "treehouse" command to go to the desktop might render the "trunk" command useless.
+ 
+Besiyata d'shmaya
+
+
+
+
+
+
