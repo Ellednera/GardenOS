@@ -1,0 +1,68 @@
+GardenOS v0.1x64-beta © 2021 Raphael Jong Jun Jie
+
+List of Supported Commands
+The commands are categorized into the following sections:
+
+1. FLOURISHING
+	Any commands that cause something new to appear on your system are listed here	
+2. DESTRUCTIVE
+	Any commands that deletes stuff from your system can be found here. 
+	!! Take note that commands listed here are SUPER DESTRUCTIVE and the end result is IRREVERSIBLE. Because of its super destructive nature, 
+		you WILL get a lot of confirmation before really doing anything to the system. The confirmation text are VERY VERY VERY LITERAL. 
+		To be safe, any dubious/wrong/strange input (by default) will abort the super destructive process :)	
+3. EXPLORING
+	Anything to do with the program itself or just to manuever around your system are categorized under this section
+		
+
+~ FLOURISHING ~
+
+grow [branch|leaf|leaves]
+	1. grow branch	: creates a directory (more prompt will appear after issuing this command)
+	2. grow leaf	: creates a single file, you'll need to specify the extension if you want. Default encoding is UTF-8 (more prompt will appear after issuing this command)
+	3. grow leaves	: creates multiple files in one go, you'll need to specify the extension if you want. Default encoding is UTF-8(more prompt will appear after issuing this command)
+
+
+~ DESTRUCTIVE ~
+
+break branch [-force]
+	1. break branch			: deletes the specified single directory, this only works on empty directories
+	2. break branch -force	: deletes the whole directory/folder specified. This will also remove everything within that directory
+
+nip leaf [-all|-some|-most]
+	1. nip leaf			: deletes a single file (more prompt after issuing this command)
+	2. nip leaf -all	: deletes all files under the current directory (more prompt after issuing this command))
+	3. nip leaf -some	: deletes the specified files you specified (more prompt after issuing this command)
+	4. nip leaf -most	: deletes all the files except the ones you specified (more prompt after issuing this command)
+
+
+
+~ EXPLORING ~
+	
+visit
+	Visits a valid path. You'll specify the path after issuing this command. 
+	Take note that the path is case-insensitive, however, the path that you visit will be shown the way you typed it in.
+	Example: visiting "place" will result in ".../plAce" if you typed in "plAce"
+
+leave
+	Goes back one directory.
+	
+trunk
+	Brings you to the root of your computer directly
+
+treehouse
+	Brings you to your desktop directly
+
+explore [branch|leaf]
+	1. explore			: lists all  the directories and files under your current working directory
+	2. explore branch	: lists all the directories situated under your current working directory
+	3. explore leaf		:lists all the files situated under your current working directory
+
+address
+	Shows you your current working directory
+
+cls
+	Clears the console screen
+
+exit
+	Exits the program
+
