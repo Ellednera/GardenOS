@@ -1,6 +1,5 @@
 # GardenOS
 ### (currently for Windows only)
-### The executable file is not available at the moment
 A simple and useful command line program with a garden theme. This project (for fun) is still in developement. This is a beginner's project :)
 
 There are 2 important programs--gardenOS.pl (the actual program) and valcom.pl (for testing codes and ideas)
